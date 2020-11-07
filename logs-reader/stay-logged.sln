@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30621.155
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "logs-reader", "logs-reader\logs-reader.csproj", "{BBECBAAD-4B45-4AC9-92DB-6D9350B938F3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "logs-writer", "logs-writer\logs-writer.csproj", "{E352F95F-88EA-4DB4-892B-924D22F0B885}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{BBECBAAD-4B45-4AC9-92DB-6D9350B938F3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BBECBAAD-4B45-4AC9-92DB-6D9350B938F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BBECBAAD-4B45-4AC9-92DB-6D9350B938F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BBECBAAD-4B45-4AC9-92DB-6D9350B938F3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E352F95F-88EA-4DB4-892B-924D22F0B885}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E352F95F-88EA-4DB4-892B-924D22F0B885}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E352F95F-88EA-4DB4-892B-924D22F0B885}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E352F95F-88EA-4DB4-892B-924D22F0B885}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {843F38AC-A102-48BE-AC9B-06FD2954DD40}
+	EndGlobalSection
+EndGlobal

@@ -2,7 +2,9 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading;
 using System.Timers;
+using Timer = System.Timers.Timer;
 
 namespace StayLogged.LogsWriter
 {
@@ -15,33 +17,40 @@ namespace StayLogged.LogsWriter
 
         public LogsProducer(string operatingSystem)
         {
-            const int loggingIntervalInMilliseconds = 5000;
-            timer = new Timer { Interval = loggingIntervalInMilliseconds };
-            timer.Elapsed += ReceiveLogs;
-
             var factory = new ConnectionFactory
             {
-                Uri = new Uri("amqp://guest:guest@localhost"),
-                ContinuationTimeout = TimeSpan.MaxValue
+                Uri = new Uri("amqp://guest:guest@localhost")
             };
             connection = factory.CreateConnection();
             channel = connection.CreateModel();
+
             logsReader = new LogsReader(operatingSystem);
+
+            const int loggingIntervalInMilliseconds = 5000;
+            timer = new Timer { Interval = loggingIntervalInMilliseconds };
+            timer.Elapsed += PublishLogs;
         }
 
-        public void Start()
+        public void Start(CancellationToken cancellationToken)
         {
             timer.Start();
+
+            WaitHandle.WaitAny(new[] { cancellationToken.WaitHandle });
         }
 
-        private void ReceiveLogs(object sender, ElapsedEventArgs e)
+        private void PublishLogs(object sender, ElapsedEventArgs e)
         {
             IBasicProperties properties = channel.CreateBasicProperties();
             List<Log> logs = logsReader.Read();
 
             foreach (Log log in logs)
             {
-                byte[] messageBytes = Encoding.UTF8.GetBytes(log.Data);
+                if (string.IsNullOrEmpty(log.Data))
+                {
+                    continue;
+                }
+
+                byte[] messageBytes = Encoding.UTF8.GetBytes($"{Enum.GetName(typeof(LogType), log.Type)?.ToUpper()}: {log.Data}");
                 const string exchangeName = "logs-exchange";
 
                 channel.BasicPublish(exchangeName,

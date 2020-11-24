@@ -1,0 +1,7 @@
+{
+  "profiles": {
+    "logs-writer": {
+      "commandName": "Project"
+    }
+  }
+}

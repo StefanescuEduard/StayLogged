@@ -37,7 +37,7 @@ namespace StayLogged.LogsWriter
         {
             EventLog[] eventLogs = EventLog.GetEventLogs();
 
-            return string.Join(Environment.NewLine, eventLogs.Where(e => e.Source == "Application")
+            return string.Join(Environment.NewLine, eventLogs.Where(e => e.Log == "Application")
                 .SelectMany(eventLog => eventLog.Entries.Cast<EventLogEntry>(),
                     (eventLog, eventLogEntry) => new { eventLog, eventLogEntry })
                 .Where(@t => @t.eventLogEntry.EntryType == entryType)

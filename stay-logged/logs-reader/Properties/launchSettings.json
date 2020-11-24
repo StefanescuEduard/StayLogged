@@ -1,0 +1,7 @@
+{
+  "profiles": {
+    "logs-reader": {
+      "commandName": "Project"
+    }
+  }
+}

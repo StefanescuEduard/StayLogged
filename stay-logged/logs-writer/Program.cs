@@ -1,32 +1,31 @@
-﻿using System.Linq;
+﻿using CommandLine;
+using System;
+using System.Threading;
 
 namespace StayLogged.LogsWriter
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public class Options
         {
-            if (args.Any())
-            {
-                string operatingSystemName = GetOperatingSystemName(args.First());
-
-                using var logsProducer = new LogsProducer(operatingSystemName);
-                logsProducer.Start();
-            }
+            [Option('o', "operatingSystem", Required = true, HelpText = "Provide the operating system name.")]
+            public string OperatingSystem { get; set; }
         }
 
-        private static string GetOperatingSystemName(string argument)
+        public static void Main(string[] args)
         {
-            if (argument.Equals("linux"))
-            {
-                return "linux";
-            }
-            if (argument.Equals("windows"))
-            {
-                return "windows";
-            }
+            Parser.Default.ParseArguments<Options>(args)
+                .WithParsed<Options>(o =>
+                {
+                    var cancellationTokenSource = new CancellationTokenSource();
 
-            return string.Empty;
+                    using var logsProducer = new LogsProducer(o.OperatingSystem);
+                    logsProducer.Start(cancellationTokenSource.Token);
+
+                    Console.ReadKey();
+
+                    cancellationTokenSource.Cancel();
+                });
         }
     }
 }

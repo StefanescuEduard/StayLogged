@@ -17,8 +17,7 @@ namespace StayLogged.LogsReader
 
             var factory = new ConnectionFactory
             {
-                Uri = new Uri("amqp://guest:guest@localhost"),
-                ContinuationTimeout = TimeSpan.MaxValue
+                Uri = new Uri("amqp://guest:guest@localhost")
             };
             connection = factory.CreateConnection();
             channel = connection.CreateModel();
@@ -57,6 +56,7 @@ namespace StayLogged.LogsReader
         {
             foreach (var queueName in queueNames)
             {
+                channel.QueueDelete(queueName);
                 channel.QueueDeclare(queueName,
                     false,
                     false,

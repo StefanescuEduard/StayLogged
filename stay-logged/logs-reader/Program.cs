@@ -13,7 +13,7 @@ namespace StayLogged.LogsReader
         public static void Main()
         {
             const string exchangeName = "logs-exchange";
-            string[] queueNames = { "info", "error" };
+            string[] queueNames = { "information", "error" };
 
             var factory = new ConnectionFactory
             {

@@ -1,6 +1,7 @@
 ﻿using RabbitMQ.Client;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -29,9 +30,14 @@ namespace StayLogged.LogsWriter
 
             logsReader = new LogsReader(operatingSystem);
 
-            const int loggingIntervalInMilliseconds = 5000;
-            timer = new Timer { Interval = loggingIntervalInMilliseconds };
-            timer.Elapsed += PublishLogs;
+            /* const int loggingIntervalInMilliseconds = 5000;
+             timer = new Timer { Interval = loggingIntervalInMilliseconds };
+             timer.Elapsed += PublishLogs;*/
+
+            EventLog log = new EventLog();
+            log.Log = "Application";
+            log.EntryWritten += new EntryWrittenEventHandler(PublishLogs);
+            log.EnableRaisingEvents = true;
         }
 
         public void Start(CancellationToken cancellationToken)
@@ -41,9 +47,15 @@ namespace StayLogged.LogsWriter
             WaitHandle.WaitAny(new[] { cancellationToken.WaitHandle });
         }
 
-        private void PublishLogs(object sender, ElapsedEventArgs e)
+        private void PublishLogs(object sender, EntryWrittenEventArgs e)
         {
-            IBasicProperties properties = channel.CreateBasicProperties();
+            
+            Console.WriteLine("Event Raised: |Message:{0}|Source:{1}|EventID:{2}|Type:{3}", e.Entry.Message, e.Entry.Source, e.Entry.InstanceId,e.Entry.EntryType);
+            Log log = new Log(e.Entry.EntryType, e.Entry.Message);
+            PublishLog(log, channel.CreateBasicProperties());
+            return;
+
+            /*IBasicProperties properties = channel.CreateBasicProperties();
             List<Log> logs = logsReader.Read();
 
             foreach (Log log in logs)
@@ -54,27 +66,15 @@ namespace StayLogged.LogsWriter
                 }
 
                 PublishLog(log, properties);
-            }
+            }*/
         }
 
         private void PublishLog(Log log, IBasicProperties properties)
         {
-            string[] splittedDataByRows = log.Data.Split("\n");
-            if (!splittedDataByRows.Any())
-            {
-                splittedDataByRows = log.Data.Split("\r\n");
-            }
-
-            foreach (var dataByRow in splittedDataByRows)
-            {
-                byte[] messageBytes = Encoding.UTF8.GetBytes($"<{machineName}> {Enum.GetName(typeof(LogType), log.Type)?.ToUpper()}: {dataByRow}");
-                const string exchangeName = "logs-exchange";
-
-                channel.BasicPublish(exchangeName,
-                    Enum.GetName(typeof(LogType), log.Type)?.ToLower(),
-                    properties,
-                    messageBytes);
-            }
+            byte[] messageBytes = Encoding.UTF8.GetBytes($"<{machineName}> { log.Type.ToUpper()}: {log.Data}");
+            const string exchangeName = "logs-exchange";
+            channel.BasicPublish(exchangeName, log.Type.ToLower(), properties, messageBytes);
+            
         }
 
         public void Dispose()

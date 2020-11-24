@@ -8,7 +8,7 @@ namespace StayLogged.LogsReader
     public class LogsWriter
     {
         private readonly string[] logs;
-        private const string LogsFilePath = "logs.txt";
+        private string logsFilePath;
         private static readonly object Locker = new object();
 
 
@@ -16,18 +16,31 @@ namespace StayLogged.LogsReader
         {
             this.logs = logs;
 
-            if (!File.Exists(LogsFilePath))
+            string logsDirectoryPath = Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData),
+                "logs-reader");
+            logsFilePath = Path.Combine(logsDirectoryPath, "logs.txt");
+
+            if (!Directory.Exists(logsDirectoryPath))
             {
                 lock (Locker)
                 {
-                    using FileStream fileCreateStream = File.Create(LogsFilePath);
+                    Directory.CreateDirectory(logsDirectoryPath);
+                }
+            }
+
+            if (!File.Exists(logsFilePath))
+            {
+                lock (Locker)
+                {
+                    using FileStream fileCreateStream = File.Create(logsFilePath);
                 }
             }
         }
 
         public void Write()
         {
-            string fullLogsPath = Path.Combine(Environment.CurrentDirectory, LogsFilePath);
+            string fullLogsPath = Path.Combine(Environment.CurrentDirectory, logsFilePath);
             IEnumerable<string> logsToWrite;
 
             lock (Locker)

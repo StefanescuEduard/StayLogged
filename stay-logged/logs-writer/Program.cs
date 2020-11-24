@@ -10,6 +10,9 @@ namespace StayLogged.LogsWriter
         {
             [Option('o', "operatingSystem", Required = true, HelpText = "Provide the operating system name.")]
             public string OperatingSystem { get; set; }
+
+            [Option('n', "machineName", Required = true, HelpText = "Provide the machine name.")]
+            public string MachineName { get; set; }
         }
 
         public static void Main(string[] args)
@@ -19,7 +22,7 @@ namespace StayLogged.LogsWriter
                 {
                     var cancellationTokenSource = new CancellationTokenSource();
 
-                    using var logsProducer = new LogsProducer(o.OperatingSystem);
+                    using var logsProducer = new LogsProducer(o.OperatingSystem, o.MachineName);
                     logsProducer.Start(cancellationTokenSource.Token);
 
                     Console.ReadKey();

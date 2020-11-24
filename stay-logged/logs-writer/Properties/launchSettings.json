@@ -1,7 +1,8 @@
 {
   "profiles": {
     "logs-writer": {
-      "commandName": "Project"
+      "commandName": "Project",
+      "commandLineArgs": "-o windows -n test123"
     }
   }
 }

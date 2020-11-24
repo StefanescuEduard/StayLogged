@@ -1,6 +1,7 @@
 ﻿using RabbitMQ.Client;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Timers;
@@ -10,13 +11,15 @@ namespace StayLogged.LogsWriter
 {
     public class LogsProducer : IDisposable
     {
+        private readonly string machineName;
         private readonly Timer timer;
         private readonly IConnection connection;
         private readonly IModel channel;
         private readonly LogsReader logsReader;
 
-        public LogsProducer(string operatingSystem)
+        public LogsProducer(string operatingSystem, string machineName)
         {
+            this.machineName = machineName;
             var factory = new ConnectionFactory
             {
                 Uri = new Uri("amqp://guest:guest@localhost")
@@ -50,7 +53,21 @@ namespace StayLogged.LogsWriter
                     continue;
                 }
 
-                byte[] messageBytes = Encoding.UTF8.GetBytes($"{Enum.GetName(typeof(LogType), log.Type)?.ToUpper()}: {log.Data}");
+                PublishLog(log, properties);
+            }
+        }
+
+        private void PublishLog(Log log, IBasicProperties properties)
+        {
+            string[] splittedDataByRows = log.Data.Split("\n");
+            if (!splittedDataByRows.Any())
+            {
+                splittedDataByRows = log.Data.Split("\r\n");
+            }
+
+            foreach (var dataByRow in splittedDataByRows)
+            {
+                byte[] messageBytes = Encoding.UTF8.GetBytes($"<{machineName}> {Enum.GetName(typeof(LogType), log.Type)?.ToUpper()}: {dataByRow}");
                 const string exchangeName = "logs-exchange";
 
                 channel.BasicPublish(exchangeName,

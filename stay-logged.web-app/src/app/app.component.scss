@@ -1,0 +1,21 @@
+.main-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  mat-card {
+    width: 80vw;
+    height: max-content;
+    margin: 16px 0;
+
+    td , th {
+      white-space: normal;
+      word-wrap: break-word;
+      max-width: 500px;
+    }
+  }
+
+  mat-card > * {
+    width: 80vw;
+  }
+}

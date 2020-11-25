@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Log } from '../app.component';
+import { LogDto } from '../dto/log.dto';
 
 @Injectable({
   providedIn: 'root',
@@ -13,7 +13,7 @@ export class LogsService {
     this.apiUrl = 'http://localhost:5000/logs';
   }
 
-  getLogs(): Observable<Log[]> {
-    return this.http.get<Log[]>(this.apiUrl);
+  getLogs(): Observable<LogDto[]> {
+    return this.http.get<LogDto[]>(this.apiUrl);
   }
 }

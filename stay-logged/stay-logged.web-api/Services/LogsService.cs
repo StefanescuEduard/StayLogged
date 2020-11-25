@@ -22,26 +22,20 @@ namespace StayLogged.WebApi.Services
 
                 foreach (var log in readLogs)
                 {
-                    try
+                    if (string.IsNullOrEmpty(log.Trim()))
                     {
-                        if (string.IsNullOrEmpty(log.Trim()))
-                        {
-                            continue;
-                        }
+                        continue;
+                    }
 
-                        logs.Add(new Log
-                        {
-                            MachineName = GetElementFromLog(log, "<", ">"),
-                            LogType = GetElementFromLog(log, "> ", ": "),
-                            Message = GetMessage(log)
-                        });
-                    }
-                    catch (Exception e)
+                    logs.Add(new Log
                     {
-                        Console.WriteLine(e);
-                        throw;
-                    }
+                        MachineName = GetElementFromLog(log, "<", ">"),
+                        LogType = GetElementFromLog(log, "> ", ": "),
+                        Message = GetMessage(log)
+                    });
                 }
+
+                logs.Reverse();
             }
 
             return logs;

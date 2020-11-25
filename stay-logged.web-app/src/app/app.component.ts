@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
-import { interval } from 'rxjs';
+import { interval, Subscription } from 'rxjs';
 import { mergeMap } from 'rxjs/operators';
 import { LogDto } from './dto/log.dto';
 import { LogsService } from './services/logs.service';
@@ -10,14 +10,15 @@ import { LogsService } from './services/logs.service';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, OnDestroy {
   displayedColumns: string[] = ['type', 'name', 'message'];
   dataSource: MatTableDataSource<LogDto>;
+  logsIntervalSubscription: Subscription;
 
   constructor(private logsService: LogsService) {}
 
   ngOnInit(): void {
-    interval(5000)
+    this.logsIntervalSubscription = interval(5000)
       .pipe(
         mergeMap(() => {
           return this.logsService.getLogs();
@@ -26,6 +27,10 @@ export class AppComponent implements OnInit {
       .subscribe(logs => {
         this.dataSource = new MatTableDataSource(logs);
       });
+  }
+
+  ngOnDestroy(): void {
+    this.logsIntervalSubscription.unsubscribe();
   }
 
   applyFilter(event: Event): void {

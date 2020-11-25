@@ -40,18 +40,17 @@ namespace StayLogged.LogsReader
 
         public void Write()
         {
-            string fullLogsPath = Path.Combine(Environment.CurrentDirectory, logsFilePath);
             IEnumerable<string> logsToWrite;
 
             lock (Locker)
             {
-                string[] currentLogs = File.ReadAllLines(fullLogsPath);
+                string[] currentLogs = File.ReadAllLines(logsFilePath);
                 logsToWrite = currentLogs.Union(logs);
             }
 
             lock (Locker)
             {
-                File.WriteAllLines(fullLogsPath, logsToWrite);
+                File.WriteAllLines(logsFilePath, logsToWrite);
             }
         }
     }

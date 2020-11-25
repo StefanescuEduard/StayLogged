@@ -22,9 +22,7 @@ namespace StayLogged.LogsWriter
             Console.WriteLine(fqdn);
 
             var cancellationTokenSource = new CancellationTokenSource();
-
-            using var logsProducer = new LogsProducer(os, fqdn);
-           // logsProducer.Start(cancellationTokenSource.Token);
+            using var logsProducer = new SendLogs(os, fqdn);
 
             Console.ReadKey();
 

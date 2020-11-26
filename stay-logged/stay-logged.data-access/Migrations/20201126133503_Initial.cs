@@ -11,14 +11,12 @@ namespace StayLogged.DataAccess.Migrations
                 name: "Hosts",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Ip = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Ip = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Hosts", x => x.Id);
+                    table.PrimaryKey("PK_Hosts", x => x.Ip);
                 });
 
             migrationBuilder.CreateTable(
@@ -31,23 +29,23 @@ namespace StayLogged.DataAccess.Migrations
                     DateTime = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Source = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Descriptions = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    HostId = table.Column<int>(type: "int", nullable: true)
+                    HostIp = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Logs", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Logs_Hosts_HostId",
-                        column: x => x.HostId,
+                        name: "FK_Logs_Hosts_HostIp",
+                        column: x => x.HostIp,
                         principalTable: "Hosts",
-                        principalColumn: "Id",
+                        principalColumn: "Ip",
                         onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Logs_HostId",
+                name: "IX_Logs_HostIp",
                 table: "Logs",
-                column: "HostId");
+                column: "HostIp");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

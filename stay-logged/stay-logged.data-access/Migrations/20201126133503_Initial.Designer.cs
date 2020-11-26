@@ -10,7 +10,7 @@ using stay_logged.data_access;
 namespace StayLogged.DataAccess.Migrations
 {
     [DbContext(typeof(StayLoggedContext))]
-    [Migration("20201126105012_Initial")]
+    [Migration("20201126133503_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -23,18 +23,13 @@ namespace StayLogged.DataAccess.Migrations
 
             modelBuilder.Entity("StayLogged.Domain.Host", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .UseIdentityColumn();
-
                     b.Property<string>("Ip")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Id");
+                    b.HasKey("Ip");
 
                     b.ToTable("Hosts");
                 });
@@ -52,8 +47,8 @@ namespace StayLogged.DataAccess.Migrations
                     b.Property<string>("Descriptions")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("HostId")
-                        .HasColumnType("int");
+                    b.Property<string>("HostIp")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Source")
                         .HasColumnType("nvarchar(max)");
@@ -63,7 +58,7 @@ namespace StayLogged.DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("HostId");
+                    b.HasIndex("HostIp");
 
                     b.ToTable("Logs");
                 });
@@ -72,7 +67,7 @@ namespace StayLogged.DataAccess.Migrations
                 {
                     b.HasOne("StayLogged.Domain.Host", "Host")
                         .WithMany()
-                        .HasForeignKey("HostId");
+                        .HasForeignKey("HostIp");
 
                     b.Navigation("Host");
                 });

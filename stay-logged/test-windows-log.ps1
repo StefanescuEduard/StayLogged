@@ -1,4 +1,4 @@
 $evt = new-object System.Diagnostics.EventLog("Application")
 $evt.Source = "MyEvent"
-$infoevent = [System.Diagnostics.EventLogEntryType]::Information
-$evt.WriteEntry("My Test Event",$infoevent,70)
+$infoevent = [System.Diagnostics.EventLogEntryType]::Error
+$evt.WriteEntry("Error happened",$infoevent,70)

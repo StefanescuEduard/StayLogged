@@ -1,10 +1,6 @@
 ﻿using RabbitMQ.Client;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
 using System.Text;
-using System.Threading;
 
 namespace StayLogged.LogsWriter
 {
@@ -37,7 +33,7 @@ namespace StayLogged.LogsWriter
         public void PublishLog(Log log)
         {
             IBasicProperties properties = channel.CreateBasicProperties();
-            byte[] messageBytes = Encoding.UTF8.GetBytes($"<{machineName}> { log.Type.ToUpper()}: {log.Data}");
+            byte[] messageBytes = Encoding.UTF8.GetBytes($"<{machineName}> { log.Type.ToUpper()} !*<numesursa>*!: {log.Data}");
             const string exchangeName = "logs-exchange";
             channel.BasicPublish(exchangeName, log.Type.ToLower(), properties, messageBytes);
             

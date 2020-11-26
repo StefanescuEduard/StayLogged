@@ -1,8 +1,8 @@
 <div class="main-container">
   <div class="charts-container">
     <mat-card class="error-chart">
-      <dx-pie-chart id="pie" title="Errors" palette="bright" [dataSource]="areasForPie">
-        <dxi-series argumentField="country" valueField="area">
+      <dx-pie-chart id="pie" title="Errors" palette="bright" [dataSource]="errors">
+        <dxi-series argumentField="ip" valueField="count">
           <dxo-label [visible]="true">
             <dxo-connector [visible]="true" [width]="1"></dxo-connector>
           </dxo-label>
@@ -12,8 +12,8 @@
       </dx-pie-chart>
     </mat-card>
     <mat-card class="info-chart">
-      <dx-pie-chart id="pie" title="Information" palette="bright" [dataSource]="areasForPie">
-        <dxi-series argumentField="country" valueField="area">
+      <dx-pie-chart id="pie" title="Information" palette="bright" [dataSource]="info">
+        <dxi-series argumentField="ip" valueField="count">
           <dxo-label [visible]="true">
             <dxo-connector [visible]="true" [width]="1"></dxo-connector>
           </dxo-label>
@@ -38,22 +38,22 @@
 
       <ng-container matColumnDef="dateTime">
         <th mat-header-cell *matHeaderCellDef> Date time </th>
-        <td mat-cell *matCellDef="let element" [ngStyle]="{'color':element.type === 'ERROR' ? 'red' : 'black' }"> {{element.type}}> {{element.dateTime}} </td>
+        <td mat-cell *matCellDef="let element" [ngStyle]="{'color':element.type === 'ERROR' ? 'red' : 'black' }"> {{element.dateTime}} </td>
       </ng-container>
 
       <ng-container matColumnDef="source">
         <th mat-header-cell *matHeaderCellDef> Source </th>
-        <td mat-cell *matCellDef="let element" [ngStyle]="{'color':element.type === 'ERROR' ? 'red' : 'black' }"> {{element.type}}> {{element.source}} </td>
+        <td mat-cell *matCellDef="let element" [ngStyle]="{'color':element.type === 'ERROR' ? 'red' : 'black' }"> {{element.source}} </td>
       </ng-container>
 
       <ng-container matColumnDef="description">
         <th mat-header-cell *matHeaderCellDef> Description </th>
-        <td mat-cell *matCellDef="let element" [ngStyle]="{'color':element.type === 'ERROR' ? 'red' : 'black' }"> {{element.type}}> {{element.description}} </td>
+        <td mat-cell *matCellDef="let element" [ngStyle]="{'color':element.type === 'ERROR' ? 'red' : 'black' }"> {{element.description}} </td>
       </ng-container>
 
       <ng-container matColumnDef="ip">
         <th mat-header-cell *matHeaderCellDef> IP </th>
-        <td mat-cell *matCellDef="let element" [ngStyle]="{'color':element.type === 'ERROR' ? 'red' : 'black' }"> {{element.type}}> {{element.ip}} </td>
+        <td mat-cell *matCellDef="let element" [ngStyle]="{'color':element.type === 'ERROR' ? 'red' : 'black' }"> {{element.ip}} </td>
       </ng-container>
 
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

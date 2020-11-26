@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { ChartLogDto } from '../dto/chart-log.dto';
 import { LogDto } from '../dto/log.dto';
 
 @Injectable({
@@ -15,5 +16,9 @@ export class LogsService {
 
   getLogs(): Observable<LogDto[]> {
     return this.http.get<LogDto[]>(this.apiUrl);
+  }
+
+  getChart(type: string): Observable<ChartLogDto[]> {
+    return this.http.get<ChartLogDto[]>(`${this.apiUrl}/${type}`);
   }
 }

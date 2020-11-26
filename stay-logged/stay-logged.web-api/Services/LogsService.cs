@@ -27,11 +27,30 @@ namespace StayLogged.WebApi.Services
                     }).ToList();
         }
 
-        public IEnumerable<ChartLogDto> GetErrorLogs()
+        public IEnumerable<ChartLogDto> GetErrorLogs(string type)
         {
-            var logs = ReadLogs().GroupBy(l => l.Ip);
+            var logs = ReadLogs().Where(l => l.Type == type).GroupBy(l => l.Ip);
             var chart = new List<ChartLogDto>();
 
+            foreach (var log in logs)
+            {
+                var foundLog = chart.FirstOrDefault(l => l.Ip == log.Key);
+
+                if (foundLog != null)
+                {
+                    foundLog.Count++;
+                }
+                else
+                {
+                    foundLog = new ChartLogDto
+                    {
+                        Ip = log.Key,
+                        Count = 1
+                    };
+
+                    chart.Add(foundLog);
+                }
+            }
 
             return chart;
         }

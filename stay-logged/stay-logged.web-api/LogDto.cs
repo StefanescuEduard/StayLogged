@@ -14,11 +14,4 @@ namespace StayLogged.WebApi
 
         public string Ip { get; set; }
     }
-
-    public class ChartLogDto
-    {
-        public string Ip { get; set; }
-
-        public int Count { get; set; }
-    }
 }

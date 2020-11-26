@@ -22,5 +22,13 @@ namespace StayLogged.WebApi.Controllers
 
             return Ok(logs);
         }
+
+        [HttpGet("{type}")]
+        public IActionResult GetChartData(string type)
+        {
+            IEnumerable<ChartLogDto> chartLogs = logsService.GetErrorLogs(type);
+
+            return Ok(chartLogs);
+        }
     }
 }

@@ -2,6 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { interval, Subscription } from 'rxjs';
 import { mergeMap } from 'rxjs/operators';
+import { ChartLogDto } from './dto/chart-log.dto';
 import { LogDto } from './dto/log.dto';
 import { LogsService } from './services/logs.service';
 
@@ -51,10 +52,17 @@ let areas: Area[] = [
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnInit, OnDestroy {
-  displayedColumns: string[] = ['type', 'dateTime', 'source', 'description', 'ip'];
+  displayedColumns: string[] = [
+    'type',
+    'dateTime',
+    'source',
+    'description',
+    'ip',
+  ];
   dataSource: MatTableDataSource<LogDto>;
   logsIntervalSubscription: Subscription;
-  areasForPie: Area[] = areas;
+  errors: ChartLogDto[];
+  info: ChartLogDto[];
 
   constructor(private logsService: LogsService) {}
 
@@ -65,9 +73,17 @@ export class AppComponent implements OnInit, OnDestroy {
           return this.logsService.getLogs();
         })
       )
-      .subscribe(logs => {
+      .subscribe((logs) => {
         this.dataSource = new MatTableDataSource(logs);
       });
+
+    this.logsService.getChart('ERROR').subscribe((data) => {
+      this.errors = data;
+    });
+
+    this.logsService.getChart('INFORMATION').subscribe((data) => {
+      this.info = data;
+    });
   }
 
   ngOnDestroy(): void {

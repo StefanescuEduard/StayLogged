@@ -75,8 +75,6 @@ namespace StayLogged.LogsReader
         private static void WriteLog(string queueName, CancellationToken cancellationToken)
         {
             LogRepository logRepository = new LogRepository();
-            Log log = new Log();
-            Host host = new Host();
             Regex regexbefore = new Regex(@"([^:]+)");
             Regex regexafter = new Regex(@"(?<=@Data@).*");
             while (!cancellationToken.IsCancellationRequested)
@@ -84,6 +82,8 @@ namespace StayLogged.LogsReader
                 BasicGetResult result = channel.BasicGet(queueName, false);
                 if (result != null)
                 {
+                    Log log = new Log();
+                    Host host = new Host();
                     string rawLogs = Encoding.UTF8.GetString(result.Body.ToArray());
                     string rawinfo = regexbefore.Match(rawLogs).ToString();
                     string data = regexafter.Match(rawLogs).ToString();

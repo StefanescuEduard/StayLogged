@@ -1,5 +1,6 @@
 .main-container {
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
 
@@ -13,9 +14,19 @@
       word-wrap: break-word;
       max-width: 500px;
     }
+    
+    table {
+      width: 100%;
+    }
   }
 
-  mat-card > * {
+  .charts-container {
+    display: flex;
+    flex-direction: row;
+    column-gap: 32px;
+  }
+
+  .table, .charts-container {
     width: 80vw;
   }
 }

@@ -1,5 +1,29 @@
 <div class="main-container">
-  <mat-card>
+  <div class="charts-container">
+    <mat-card class="error-chart">
+      <dx-pie-chart id="pie" title="Errors" palette="bright" [dataSource]="areasForPie">
+        <dxi-series argumentField="country" valueField="area">
+          <dxo-label [visible]="true">
+            <dxo-connector [visible]="true" [width]="1"></dxo-connector>
+          </dxo-label>
+        </dxi-series>
+        <dxo-size [width]="500"></dxo-size>
+        <dxo-export [enabled]="true"></dxo-export>
+      </dx-pie-chart>
+    </mat-card>
+    <mat-card class="info-chart">
+      <dx-pie-chart id="pie" title="Information" palette="bright" [dataSource]="areasForPie">
+        <dxi-series argumentField="country" valueField="area">
+          <dxo-label [visible]="true">
+            <dxo-connector [visible]="true" [width]="1"></dxo-connector>
+          </dxo-label>
+        </dxi-series>
+        <dxo-size [width]="500"></dxo-size>
+        <dxo-export [enabled]="true"></dxo-export>
+      </dx-pie-chart>
+    </mat-card>
+  </div>
+  <mat-card class="table">
     <mat-form-field>
       <mat-label>Filter</mat-label>
       <input matInput (keyup)="applyFilter($event)" #input>
@@ -9,17 +33,27 @@
 
       <ng-container matColumnDef="type">
         <th mat-header-cell *matHeaderCellDef> Log Type </th>
-        <td mat-cell *matCellDef="let element"> {{element.logType}} </td>
+        <td mat-cell *matCellDef="let element"> {{element.type}} </td>
       </ng-container>
 
-      <ng-container matColumnDef="name">
-        <th mat-header-cell *matHeaderCellDef> Machine name </th>
-        <td mat-cell *matCellDef="let element"> {{element.machineName}} </td>
+      <ng-container matColumnDef="dateTime">
+        <th mat-header-cell *matHeaderCellDef> Date time </th>
+        <td mat-cell *matCellDef="let element"> {{element.dateTime}} </td>
       </ng-container>
 
-      <ng-container matColumnDef="message">
-        <th mat-header-cell *matHeaderCellDef> Message </th>
-        <td mat-cell *matCellDef="let element"> {{element.message}} </td>
+      <ng-container matColumnDef="source">
+        <th mat-header-cell *matHeaderCellDef> Source </th>
+        <td mat-cell *matCellDef="let element"> {{element.source}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="description">
+        <th mat-header-cell *matHeaderCellDef> Description </th>
+        <td mat-cell *matCellDef="let element"> {{element.description}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="ip">
+        <th mat-header-cell *matHeaderCellDef> IP </th>
+        <td mat-cell *matCellDef="let element"> {{element.ip}} </td>
       </ng-container>
 
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

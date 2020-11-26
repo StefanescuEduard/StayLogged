@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using StayLogged.Domain;
 using StayLogged.WebApi.Services;
 using System.Collections.Generic;
 
@@ -19,7 +18,7 @@ namespace StayLogged.WebApi.Controllers
         [HttpGet]
         public IActionResult GetLogs()
         {
-            IEnumerable<Log> logs = logsService.ReadLogs();
+            IEnumerable<LogDto> logs = logsService.ReadLogs();
 
             return Ok(logs);
         }

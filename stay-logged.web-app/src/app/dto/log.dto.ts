@@ -1,5 +1,7 @@
 export interface LogDto {
-  machineName: string;
-  logType: string;
-  message: string;
+  type: string;
+  dateTime: Date | string;
+  source: string;
+  description: string;
+  ip: string;
 }

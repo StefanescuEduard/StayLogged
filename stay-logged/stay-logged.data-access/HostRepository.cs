@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using stay_logged.data_access;
 using StayLogged.Domain;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace StayLogged.DataAccess
@@ -21,6 +22,13 @@ namespace StayLogged.DataAccess
                 .Hosts
                 .Include(h => h.Logs)
                 .SingleOrDefault(h => h.Ip == ip);
+        }
+
+        public IEnumerable<Host> GetHosts()
+        {
+            return stayLoggedContext
+                .Hosts
+                .Include(h => h.Logs);
         }
 
         public void Add(Host host)

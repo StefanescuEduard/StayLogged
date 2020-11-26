@@ -1,13 +1,13 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.Collections.Generic;
 
 namespace StayLogged.Domain
 {
     public class Host
     {
         public string Name { get; set; }
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
+
         public string Ip { get; set; }
+
+        public List<Log> Logs { get; set; }
     }
 }

@@ -2,6 +2,7 @@
 using StayLogged.DataAccess;
 using StayLogged.Domain;
 using System;
+using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
@@ -74,7 +75,7 @@ namespace StayLogged.LogsReader
 
         private static void WriteLog(string queueName, CancellationToken cancellationToken)
         {
-            LogRepository logRepository = new LogRepository();
+            HostRepository hostRepository = new HostRepository();
             Regex regexbefore = new Regex(@"([^:]+)");
             Regex regexafter = new Regex(@"(?<=@Data@).*");
             while (!cancellationToken.IsCancellationRequested)
@@ -92,7 +93,6 @@ namespace StayLogged.LogsReader
                     Console.WriteLine(host.Name);
                     host.Ip = info[3];
                     Console.WriteLine(host.Ip);
-                    log.Host = host;
                     log.Type = info[1];
                     Console.WriteLine(log.Type);
                     log.Source = info[2];
@@ -101,7 +101,17 @@ namespace StayLogged.LogsReader
                     Console.WriteLine(log.Descriptions);
                     log.DateTime = DateTime.Now;
                     Console.WriteLine(rawLogs);
-                    logRepository.Add(log);
+
+                    Host hostFromDb = hostRepository.GetHost(info[3]);
+                    if (hostFromDb == null)
+                    {
+                        host.Logs = new List<Log> { log };
+                        hostRepository.Add(host);
+                    }
+                    else
+                    {
+                        hostRepository.UpdateLog(hostFromDb, log);
+                    }
 
                     channel.BasicAck(result.DeliveryTag, false);
                 }

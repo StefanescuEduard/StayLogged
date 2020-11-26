@@ -1,5 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using stay_logged.data_access;
+﻿using stay_logged.data_access;
 using StayLogged.Domain;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,7 +17,7 @@ namespace StayLogged.DataAccess
 
         public IEnumerable<Log> ReadAllLogs()
         {
-            return stayLoggedContext.Logs.Include(l => l.Host).AsEnumerable();
+            return stayLoggedContext.Logs.AsEnumerable();
         }
 
         public void Add(Log log)

@@ -13,7 +13,5 @@ namespace StayLogged.Domain
         public string Source { get; set; }
 
         public string Descriptions { get; set; }
-
-        public Host Host { get; set; }
     }
 }

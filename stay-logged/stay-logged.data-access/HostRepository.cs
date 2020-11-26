@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using stay_logged.data_access;
 using StayLogged.Domain;
-using System;
 using System.Linq;
 
 namespace StayLogged.DataAccess
@@ -21,7 +20,7 @@ namespace StayLogged.DataAccess
             return stayLoggedContext
                 .Hosts
                 .Include(h => h.Logs)
-                .SingleOrDefault(h => h.Ip.Equals(ip, StringComparison.InvariantCultureIgnoreCase));
+                .SingleOrDefault(h => h.Ip == ip);
         }
 
         public void Add(Host host)

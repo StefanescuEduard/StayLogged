@@ -1,7 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
+using stay_logged.data_access;
 
-namespace stay_logged.data_access
+namespace StayLogged.DataAccess
 {
     public class StayLoggedContextFactory : IDesignTimeDbContextFactory<StayLoggedContext>
     {

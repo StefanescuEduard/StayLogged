@@ -12,11 +12,12 @@ namespace StayLogged.LogsWriter
         private Log log;
         private FileSystemWatcher fileSystemWatcher;
         private SendLogs sendLogs;
+        Regex after;
 
         public LinuxLogReader(SendLogs sendLogs)
         {
             this.sendLogs = sendLogs;
-            
+            after = new Regex(@"(.{16}((?<=.:).*))");
             fileSystemWatcher = new FileSystemWatcher
             {
                 Path = path,
@@ -36,7 +37,7 @@ namespace StayLogged.LogsWriter
                 if (lastLine.Contains("Failed") || lastLine.Contains("Error") || lastLine.Contains("failed") || lastLine.Contains("error"))
                     log = new Log("error", lastLine,getSource(lastLine));
                 else
-                    log = new Log("information", lastLine,getSource(lastLine));
+                    log = new Log("information", after.Match(lastLine).ToString(),getSource(lastLine));
                 Console.WriteLine(lastLine);
                 sendLogs.PublishLog(log);
 

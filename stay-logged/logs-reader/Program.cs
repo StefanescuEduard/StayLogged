@@ -1,6 +1,9 @@
 ﻿using RabbitMQ.Client;
+using StayLogged.DataAccess;
+using StayLogged.Domain;
 using System;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
 
 namespace StayLogged.LogsReader
@@ -71,15 +74,34 @@ namespace StayLogged.LogsReader
 
         private static void WriteLog(string queueName, CancellationToken cancellationToken)
         {
+            LogRepository logRepository = new LogRepository();
+            Log log = new Log();
+            Host host = new Host();
+            Regex regexbefore = new Regex(@"([^:]+)");
+            Regex regexafter = new Regex(@"(?<=@Data@).*");
             while (!cancellationToken.IsCancellationRequested)
             {
                 BasicGetResult result = channel.BasicGet(queueName, false);
                 if (result != null)
                 {
                     string rawLogs = Encoding.UTF8.GetString(result.Body.ToArray());
-                    string[] logs = rawLogs.Split(Environment.NewLine);
-                    var logsWriter = new LogsWriter(logs);
-                    logsWriter.Write();
+                    string rawinfo = regexbefore.Match(rawLogs).ToString();
+                    string data = regexafter.Match(rawLogs).ToString();
+                    string[] info = rawinfo.Split();
+                    host.Name = info[0];
+                    Console.WriteLine(host.Name);
+                    host.Ip = info[3];
+                    Console.WriteLine(host.Ip);
+                    log.Host = host;
+                    log.Type = info[1];
+                    Console.WriteLine(log.Type);
+                    log.Source = info[2];
+                    Console.WriteLine(log.Source);
+                    log.Descriptions = data;
+                    Console.WriteLine(log.Descriptions);
+                    log.DateTime = DateTime.Now;
+                    Console.WriteLine(rawLogs);
+                    logRepository.Add(log);
 
                     channel.BasicAck(result.DeliveryTag, false);
                 }

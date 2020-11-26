@@ -19,7 +19,7 @@ namespace StayLogged.LogsWriter
         private void ReadLog(object sender, EntryWrittenEventArgs e)
         {
             Console.WriteLine("Event Raised: |Message:{0}|Source:{1}|EventID:{2}|Type:{3}", e.Entry.Message, e.Entry.Source, e.Entry.InstanceId, e.Entry.EntryType);
-            Log log = new Log(e.Entry.EntryType, e.Entry.Message);
+            Log log = new Log(e.Entry.EntryType.ToString(), e.Entry.Message,e.Entry.Source);
             sendLogs.PublishLog(log);
         }
     }

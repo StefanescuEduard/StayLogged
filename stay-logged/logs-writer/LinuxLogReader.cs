@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace StayLogged.LogsWriter
 {
@@ -33,13 +34,20 @@ namespace StayLogged.LogsWriter
             {
                 string lastLine = File.ReadLines(e.FullPath).Last();
                 if (lastLine.Contains("Failed") || lastLine.Contains("Error") || lastLine.Contains("failed") || lastLine.Contains("error"))
-                    log = new Log("error", lastLine);
+                    log = new Log("error", lastLine,getSource(lastLine));
                 else
-                    log = new Log("information", lastLine);
+                    log = new Log("information", lastLine,getSource(lastLine));
                 Console.WriteLine(lastLine);
                 sendLogs.PublishLog(log);
 
             }
+        }
+
+        private string getSource(string line)
+        {
+            Regex regex = new Regex(@"(?<=(\w+\S+\s){4})(\w+)");
+            Console.WriteLine(regex.Match(line).ToString());
+            return regex.Match(line).ToString();
         }
 
 

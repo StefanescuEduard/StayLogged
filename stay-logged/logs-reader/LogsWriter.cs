@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-
+using StayLogged;
 namespace StayLogged.LogsReader
 {
     public class LogsWriter
@@ -13,6 +13,7 @@ namespace StayLogged.LogsReader
 
 
         public LogsWriter(string[] logs)
+            
         {
             this.logs = logs;
 
@@ -34,6 +35,7 @@ namespace StayLogged.LogsReader
                 lock (Locker)
                 {
                     using FileStream fileCreateStream = File.Create(logsFilePath);
+                    
                 }
             }
         }

@@ -10,4 +10,9 @@
     <PackageReference Include="RabbitMQ.Client" Version="6.2.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\stay-logged.data-access\stay-logged.data-access.csproj" />
+    <ProjectReference Include="..\stay-logged.domain\stay-logged.domain.csproj" />
+  </ItemGroup>
+
 </Project>

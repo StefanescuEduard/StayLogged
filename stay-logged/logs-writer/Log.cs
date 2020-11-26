@@ -9,15 +9,16 @@ namespace StayLogged.LogsWriter
 
         public string Data { get; }
 
-        public Log(EventLogEntryType type, string data)
+        public string Source { get; }
+
+        public string Date { get; }
+
+        
+        public Log(string type, string data,string source)
         {
             Type = type.ToString();
             Data = data;
-        }
-        public Log(string type, string data)
-        {
-            Type = type.ToString();
-            Data = data;
+            Source = source;
         }
     }
 }

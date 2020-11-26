@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using StayLogged.WebApi.Models;
+using StayLogged.Domain;
 using StayLogged.WebApi.Services;
 using System.Collections.Generic;
 

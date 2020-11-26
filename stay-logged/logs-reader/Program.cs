@@ -97,8 +97,8 @@ namespace StayLogged.LogsReader
                     Console.WriteLine(log.Type);
                     log.Source = info[2];
                     Console.WriteLine(log.Source);
-                    log.Descriptions = data;
-                    Console.WriteLine(log.Descriptions);
+                    log.Description = data;
+                    Console.WriteLine(log.Description);
                     log.DateTime = DateTime.Now;
                     Console.WriteLine(rawLogs);
 

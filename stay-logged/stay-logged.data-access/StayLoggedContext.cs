@@ -20,7 +20,7 @@ namespace stay_logged.data_access
                 .ValueGeneratedOnAdd();
 
             modelBuilder.Entity<Host>()
-                .Property(r => r.Ip);
+                .HasKey(r => r.Ip);
         }
     }
 }

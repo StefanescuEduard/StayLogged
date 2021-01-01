@@ -29,12 +29,12 @@ namespace StayLogged.WebApi.Services
 
         public IEnumerable<ChartLogDto> GetErrorLogs(string type)
         {
-            var logs = ReadLogs().Where(l => l.Type == type).GroupBy(l => l.Ip);
+            var logs = ReadLogs().Where(l => l.Type == type);
             var chart = new List<ChartLogDto>();
 
             foreach (var log in logs)
             {
-                var foundLog = chart.FirstOrDefault(l => l.Ip == log.Key);
+                var foundLog = chart.FirstOrDefault(l => l.Ip == log.Ip);
 
                 if (foundLog != null)
                 {
@@ -44,7 +44,7 @@ namespace StayLogged.WebApi.Services
                 {
                     foundLog = new ChartLogDto
                     {
-                        Ip = log.Key,
+                        Ip = log.Ip,
                         Count = 1
                     };
 
